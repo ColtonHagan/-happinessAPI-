@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restful import Api, Resource, abort
+#import os
 
 app = Flask(__name__)
 api = Api(app)
@@ -10,6 +11,7 @@ db = {
     10023: 99.3,
     19634: 100.0
     }
+
 #Error checks
 def abort_if_country_doesnt_exist(country_id):
     if country_id not in db:
@@ -22,9 +24,9 @@ class Happiness(Resource):
         return {"happiness indice": db[country_id]}
 
 #TODO Get average happiness of all countries in database 
-
 api.add_resource(Happiness,"/by_id/<int:country_id>")
 
-#Devolper mode replace with actual before release
 if __name__ == "__main__":
-    app.run(debug=True)
+    #port = int(os.environ.get('PORT', 5000))
+    #app.run(debug=True, host='0.0.0.0', port=port)
+    app.run(debug=True, host='0.0.0.0', port=5000)
