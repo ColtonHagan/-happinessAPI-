@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restful import Api, Resource, abort
-#import os
+import os
 
 app = Flask(__name__)
 api = Api(app)
@@ -27,6 +27,5 @@ class Happiness(Resource):
 api.add_resource(Happiness,"/by_id/<int:country_id>")
 
 if __name__ == "__main__":
-    #port = int(os.environ.get('PORT', 5000))
-    #app.run(debug=True, host='0.0.0.0', port=port)
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)
