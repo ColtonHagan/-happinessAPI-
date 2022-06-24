@@ -1,15 +1,15 @@
 services:
-  app:
-    build: ./app/
+  api:
+    build: ./api/
     ports:
       - 5000:5000
     depends_on:
-      - mysql
-  mysql:
+      - db
+  db:
     build: ./sql/
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: 'db'
-      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_DATABASE: "db"
+      MYSQL_ROOT_PASSWORD: "root"
     ports:
       - "3306:3306"

@@ -3,24 +3,24 @@ import requests
 
 BASE_URL = "http://127.0.0.1:5000/"
 
-response = requests.get(BASE_URL + "by_id/1")
-print(response.json())
+#Starting average
+print(requests.get(BASE_URL + "happiness_average").json())
 
-response = requests.put(BASE_URL + "by_id/1", {"happiness_index": 1.0})
-print(response.json())
+#Getting 8059 happiness index
+print(requests.get(BASE_URL + "happiness_by_country/8059").json())
 
-response = requests.get(BASE_URL + "by_id/1")
-print(response.json())
+#Attempting to get non-existant 99999 - SHOULD ERROR
+print(requests.get(BASE_URL + "happiness_by_country/99999").json())
 
-#Testing api
-#response = requests.get(BASE_URL)
-#print(response.json())
+#Attemping to put already existing 8059 - SHOULD ERROR
+print(requests.put(BASE_URL + "happiness_by_country/8059", {"happiness_index": 1.0}).json())
 
-#Should work
-#response = requests.get(BASE_URL + "by_id/12345")
-#print(response.json())
+#Attemping to put invalid happiness_index - SHOULD ERROR
+print(requests.put(BASE_URL + "happiness_by_country/99999", {"happiness_index": 1.5555}).json())
 
-#Should fail
-#response = requests.get(BASE_URL + "by_id/2")
-#print(response.json())
+#Putting new entry for 99999
+print(requests.put(BASE_URL + "happiness_by_country/99999", {"happiness_index": 1}).json())
 
+#Showing new entry at 99999 exists
+print(requests.get(BASE_URL + "happiness_by_country/99999").json())
+print(requests.get(BASE_URL + "happiness_average").json())
