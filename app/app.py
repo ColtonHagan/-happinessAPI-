@@ -6,33 +6,32 @@ import mysql.connector
 app = Flask(__name__)
 api = Api(app)
 
-#Error checks
-#def abort_if_country_doesnt_exist(country_id):
-    #if country_id not in db:
-        #abort(404, error="Country id is not in database")
-#def abort_if_country_exists(country_id):
-    #if country_id in db:
-        #abort(404, error="Country id already in database")
+#
+def databaseCall(sql):
+    #TODO add error check to see if can connect to database using try
+    connection = mysql.connector.connect(user='root', password='root', host='mysql', port='3306', database='db')
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    output = cursor.fetchall()
+    connection.close()
+    return output
 
 #Get happiness indice by country id
-#class Happiness(Resource):
-#    def get(self, country_id):
-#        abort_if_country_doesnt_exist(country_id)
-#        return {"happiness indice": db[country_id]}
+class Happiness(Resource):
+    def get(self, country_id):
+        happiness = databaseCall("select HappinessIndex FROM happiness WHERE CountryId = " + str(country_id))
+        if(not happiness): abort(400, error="Country id is not in database")
+        return {"happiness": float(happiness[0][0])}
+api.add_resource(Happiness,"/by_id/<int:country_id>")
 
 #TODO Get average happiness of all countries in database 
-#api.add_resource(Happiness,"/by_id/<int:country_id>")
-
-##Testing sql database
-class Test(Resource):
+class Average(Resource):
     def get(self):
-        connection = mysql.connector.connect(user='root', password='root', host='mysql', port='3306', database='db')
-        cursor = connection.cursor()
-        cursor.execute('select FirstName FROM students')
-        students = cursor.fetchall()
-        connection.close()
-        return {"student": students[0][0]}
-api.add_resource(Test,"/")
+        #Error check if it exists 
+        #input check correct input
+        mean = databaseCall("select Avg(HappinessIndex) FROM happiness")
+        return {"Mean": float(mean[0][0])}
+api.add_resource(Average,"/average")
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
