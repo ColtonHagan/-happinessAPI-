@@ -2,7 +2,7 @@
 
 ## How to run locally
 
-IMPORTANT- You will need docker for this to work. Download [here]([https://link-url-here.org](https://www.docker.com/)) if you do not have it.
+IMPORTANT- You will need docker for this to work. Download at https://www.docker.com/ if you do not have it.
 1. Navigate to the file containing this project
 2. Open the command prompt and enter
 ```
